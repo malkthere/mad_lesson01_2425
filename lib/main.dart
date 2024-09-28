@@ -20,6 +20,12 @@ class _TodoAppState extends State<TodoApp> {
     }
   }
 
+  void _removeTodoItem(int index) {
+    setState(() {
+      _todos.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,6 +47,11 @@ class _TodoAppState extends State<TodoApp> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: Text(_todos[index]),
+                    //subtitle: Text("$index"),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => _removeTodoItem(index),
+                    ),
                   );
                 },
               ),
@@ -51,3 +62,4 @@ class _TodoAppState extends State<TodoApp> {
     );
   }
 }
+
