@@ -1,31 +1,39 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyStatelessApp());
+  runApp(MyLifecycleApp());
 }
 
-class MyStatelessApp extends StatelessWidget {
+class MyLifecycleApp extends StatefulWidget {
+  @override
+  _MyLifecycleAppState createState() => _MyLifecycleAppState();
+}
+
+class _MyLifecycleAppState extends State<MyLifecycleApp> {
+  @override
+  void initState() {
+    super.initState();
+    print("initState called");
+  }
+
+  @override
+  void dispose() {
+    print("dispose called");
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print("build called");
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Stateless Widget Example'),
+          title: Text('Stateful Widget Lifecycle'),
         ),
         body: Center(
-          child: MyCustomWidget(),
+          child: Text('Check the console for lifecycle methods.'),
         ),
       ),
-    );
-  }
-}
-
-class MyCustomWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      'Hello, I am a Stateless Widget!',
-      style: TextStyle(fontSize: 24),
     );
   }
 }
