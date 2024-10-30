@@ -1,6 +1,7 @@
 //import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mad_lesson1_2425/test.dart';
 
 void main() {
   runApp(ProfileApp());
@@ -12,63 +13,42 @@ class ProfileApp extends StatefulWidget {
 }
 
 class _ProfileAppState extends State<ProfileApp> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    // Step 4: Dispose of the controller when it’s no longer needed
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('User Profile'),
-        ),
-        body: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(20),
-              color: Colors.blueAccent,
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage:Image.asset('pics/profilepic.png').image,
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'John Doe',
-                    style: TextStyle(fontSize: 24, color: Colors.white),
-                  ),
-                  Text(
-                    'Software Developer',
-                    style: TextStyle(fontSize: 16, color: Colors.white70),
-                  ),
-                ],
+        appBar: AppBar(title: Text('TextEditingController Example')),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                // Step 2: Assign the controller to the TextField
+                controller: _controller,
+                decoration: InputDecoration(labelText: 'Enter some text'),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Email:'),
-                  Text('john.doe@example.com'),
-                ],
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  // Step 3: Access the text value from the controller
+                  print('Text entered: ${_controller.text}');
+      
+                },
+                child: Text('Print Text'),
               ),
-            ),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Phone:'),
-                  Text('+1234567890'),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-
     );
   }
 }
