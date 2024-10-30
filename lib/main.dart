@@ -72,4 +72,3 @@ class _ProfileAppState extends State<ProfileApp> {
     );
   }
 }
-
