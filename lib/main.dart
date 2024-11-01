@@ -1,49 +1,86 @@
-//import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:mad_lesson1_2425/SecondScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 void main() {
-  runApp(ProfileApp());
+  runApp(SettingsPage());
 }
-
-class ProfileApp extends StatefulWidget {
+class SettingsPage extends StatefulWidget {
   @override
-  _ProfileAppState createState() => _ProfileAppState();
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
+class _SettingsPageState extends State<SettingsPage> {
+  TextEditingController _usernameController = TextEditingController();
+  bool _darkModeEnabled = false;
 
-class _ProfileAppState extends State<ProfileApp> {
+  @override
+  void initState() {
+    super.initState();
+    _loadSettings();
+  }
+
+  // Method to load saved settings
+  Future<void> _loadSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _usernameController.text = prefs.getString('username') ?? '';
+      _darkModeEnabled = prefs.getBool('darkMode') ?? false;
+    });
+  }
+
+  // Method to save settings
+  Future<void> _saveSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', _usernameController.text);
+    await prefs.setBool('darkMode', _darkModeEnabled);
+    print('Settings saved');
+  }
+
+  // Method to Delete settings
+  Future<void> _clearSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('username'); // Remove username
+    await prefs.remove('darkMode'); // Remove dark mode preference
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: FirstScreen(),
-    );
-  }
-}
+      home: Scaffold(
+        appBar: AppBar(title: Text('Settings')),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: _usernameController,
+                decoration: InputDecoration(labelText: 'Username'),
+              ),
+              SwitchListTile(
+                title: Text('Dark Mode'),
+                value: _darkModeEnabled,
+                onChanged: (bool value) {
+                  setState(() {
+                    _darkModeEnabled = value;
+                  });
+                },
+              ),
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: _saveSettings,
+                    child: Text('Save Settings'),
+                  ),
+                  SizedBox(width: 20,),
+                  ElevatedButton(
+                    onPressed: _clearSettings,
+                    child: Text('clear setting'),
+                  ),
+                ],
+              ),
 
-class FirstScreen extends StatelessWidget {
-  TextEditingController Textcontroller=new TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('First Screen')),
-      body: Center(
-        child: Column(
-          children: [
-            TextField(
-              controller: Textcontroller,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SecondScreen(data: Textcontroller.text)),
-                );
-              },
-              child: Text('Go to Second Screen'),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
