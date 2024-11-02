@@ -9,16 +9,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String? _errorMessage;
 
   Future<void> _login() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? savedUsername = prefs.getString('username');
+    final String? savedemail = prefs.getString('email');
     final String? savedPassword = prefs.getString('password');
 
-    if (_usernameController.text == savedUsername &&
+    if (_emailController.text == savedemail &&
         _passwordController.text == savedPassword) {
       Navigator.pushReplacement(
         context,
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     } else {
       setState(() {
-        _errorMessage = 'Invalid username or password';
+        _errorMessage = 'Invalid email or password';
       });
     }
   }
@@ -42,8 +43,8 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
-                controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Username'),
+                controller: _emailController,
+                decoration: InputDecoration(labelText: 'email'),
               ),
               TextField(
                 controller: _passwordController,
