@@ -295,7 +295,7 @@ class _TwoPanelsState extends State<TwoPanels> with TickerProviderStateMixin {
                 color: theme.primaryColor,
                 child: const Center(
                   child: Text(
-                    "Back Panel",
+                    "Back Panel-1",
                     style: TextStyle(fontSize: 24.0, color: Colors.white),
                   ),
                 ),
@@ -307,7 +307,7 @@ class _TwoPanelsState extends State<TwoPanels> with TickerProviderStateMixin {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        "Back Panel",
+                        "Back Panel-2",
                         style: TextStyle(fontSize: 24.0, color: Colors.white),
                       ),
                       const SizedBox(
