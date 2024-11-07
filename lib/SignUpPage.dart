@@ -48,7 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   decoration: InputDecoration(labelText: 'Email'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return 'Please enter your E_mail';
                     }
                     return null;
                   },
