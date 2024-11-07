@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
-import 'package:mad_lesson1_2425/LoginPage.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
@@ -61,59 +60,22 @@ class _ZoomState extends State<Zoom> {
       menuScreen: Scaffold(
         backgroundColor: Colors.white,
         body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: () {
-                    final navigator = Navigator.of(
-                      context,
-                    );
-                    z.close?.call();
-                  },
-                  child: Text(
-                    "الصفحة الرئيسية",
-                    style: TextStyle(fontSize: 24.0, color: Colors.black),
+          child: InkWell(
+            onTap: () {
+              final navigator = Navigator.of(
+                context,
+              );
+              z.close?.call()?.then(
+                    (value) => navigator.push(
+                  MaterialPageRoute(
+                    builder: (_) => TestPage(),
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    final navigator = Navigator.of(
-                      context,
-                    );
-                    z.close?.call()?.then(
-                          (value) => navigator.push(
-                        MaterialPageRoute(
-                          builder: (_) => TestPage(),
-                        ),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    "إدارة الملف الشخصي",
-                    style: TextStyle(fontSize: 24.0, color: Colors.black),
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    final navigator = Navigator.of(
-                      context,
-                    );
-                    z.close?.call()?.then(
-                          (value) => navigator.push(
-                        MaterialPageRoute(
-                          builder: (_) => TestPage2(),
-                        ),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    "صفحة اخرى",
-                    style: TextStyle(fontSize: 24.0, color: Colors.black),
-                  ),
-                ),
-              ],
+              );
+            },
+            child: Text(
+              "Push Page",
+              style: TextStyle(fontSize: 24.0, color: Colors.black),
             ),
           ),
         ),
@@ -405,44 +367,9 @@ class TestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('الملف الشخصي'),
-      ),
+      appBar: AppBar(),
       body: Center(
-        child: Text("هنا يمكن للمستخدم التعديل على ملفة الشخصي"),
-      ),
-    );
-  }
-}
-class TestPage2 extends StatelessWidget {
-  const TestPage2({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('صفحى اخرى'),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Text("صفحة اخرى للقيام بأي من وظائف النظام"),
-              SizedBox(height: 20,),
-          TextField(
-            decoration: InputDecoration(
-              labelText: 'Enter your name',
-              border: OutlineInputBorder(),
-            ),
-          ),
-              ElevatedButton(onPressed: (){
-                Navigator.pop(context);
-              },
-                  child: Text('go back'))
-            ],
-          ),
-        ),
+        child: Text("Test Page !"),
       ),
     );
   }
