@@ -1,101 +1,78 @@
+// يجب حفظ هذا الملف لإنشاء اي قاعدة بيانات
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-
-class DatabaseHelper {
-  static final DatabaseHelper instance = DatabaseHelper._init();
-
-  static Database? _database;
-
-  DatabaseHelper._init();
-
-  Future<Database> get database async {
-    if (_database != null) return _database!;
-    _database = await _initDB('MyfirstDB.db');
-    return _database!;
+class SqlDb {
+  // this is made to not make init again and again
+  static Database? _db;
+  Future<Database?> get db async{
+    if (_db ==null){
+      _db = await initalDb();
+      return _db;
+    }else{
+      return _db;
+    }
   }
+  // here we init the database and creat the tables
+  initalDb() async{
+    String databasepath = await getDatabasesPath();
+    String path = join(databasepath, 'mazdb.db');
+    Database mydb = await openDatabase(path, onCreate: _onCreate, version:2, onUpgrade:_onUpgrade);
+    return mydb;
 
-  Future<Database> _initDB(String filePath) async {
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, filePath);
-
-    return await openDatabase(
-      path,
-      version: 1,
-      onCreate: _createDB,
-    );
   }
-
-  Future<void> _createDB(Database db, int version) async {
+  _onUpgrade(Database db, int oldversion, int newversion)async{
     await db.execute('''
-      CREATE TABLE notes (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT,
-        content TEXT,
-        created_at TEXT
-      )
-    ''');
+        CREATE TABLE "products"(
+        "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        "pro_name" TEXT NOT NULL,
+        "pro_type" TEXT NOT NULL,
+        "pro_desc" TEXT NOT NULL
+        )
+        ''');
+
+    print("onUpgrae =========================");
+  }
+  _onCreate(Database db, int version) async{
+    await db.execute('''
+        CREATE TABLE "notes"(
+        "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        "note" TEXT NOT NULL
+        )
+        ''');
+    await db.execute('''
+        CREATE TABLE "users"(
+        "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        "user_name" TEXT NOT NULL,
+        "user_password" TEXT NOT NULL
+        )
+        ''');
+    print("======onCreat database and tables ================");
   }
 
-  Future<int> insertNote(Note note) async {
-    final db = await instance.database;
-    return await db.insert('notes', note.toMap());
+
+// SELECT
+  readData(String sql) async{
+    Database? mydb = await db;
+    List<Map> response = await mydb!.rawQuery(sql);
+    return response;
   }
-
-  Future<List<Note>> getNotes() async {
-    final db = await instance.database;
-    final result = await db.query('notes');
-
-    return result.map((map) => Note.fromMap(map)).toList();
+// INSERT
+  insertData(String sql) async{
+    Database? mydb = await db;
+    int response = await mydb!.rawInsert(sql);
+    return response;
   }
-
-  Future<int> updateNote(Note note) async {
-    final db = await instance.database;
-    return await db.update(
-      'notes',
-      note.toMap(),
-      where: 'id = ?',
-      whereArgs: [note.id],
-    );
+// UPDATE
+  updateData(String sql) async{
+    Database? mydb = await db;
+    int response = await mydb!.rawUpdate(sql);
+    return response;
   }
-  Future<int> deleteNote(int id) async {
-    final db = await instance.database;
-    return await db.delete(
-      'notes',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-  }
-
-}
-
-class Note {
-  final int? id;
-  final String title;
-  final String content;
-  final String createdAt;
-
-  Note({
-    this.id,
-    required this.title,
-    required this.content,
-    required this.createdAt,
-  });
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'title': title,
-      'content': content,
-      'created_at': createdAt,
-    };
-  }
-
-  static Note fromMap(Map<String, dynamic> map) {
-    return Note(
-      id: map['id'],
-      title: map['title'],
-      content: map['content'],
-      createdAt: map['created_at'],
-    );
+// DELETE
+  deleteData(String sql) async{
+    Database? mydb = await db;
+    int response = await mydb!.rawDelete(sql);
+    return response;
   }
 }
