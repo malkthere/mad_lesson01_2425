@@ -1,51 +1,55 @@
-//import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:mad_lesson1_2425/SecondScreen.dart';
+
 void main() {
-  runApp(ProfileApp());
+  runApp(const MyApp());
 }
 
-class ProfileApp extends StatefulWidget {
-  @override
-  _ProfileAppState createState() => _ProfileAppState();
-}
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-
-class _ProfileAppState extends State<ProfileApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: FirstScreen(),
+      title: 'Return Data Demo',
+      home: const HomeScreen(),
     );
   }
 }
 
-class FirstScreen extends StatelessWidget {
-  TextEditingController Textcontroller=new TextEditingController();
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('First Screen')),
+      appBar: AppBar(title: const Text('Home Screen')),
       body: Center(
-        child: Column(
-          children: [
-            TextField(
-              controller: Textcontroller,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SecondScreen(data: Textcontroller.text)),
-                );
-              },
-              child: Text('Go to Second Screen'),
-            ),
-          ],
+        child: ElevatedButton(
+          onPressed: () async{
+            final result = await Navigator.push<String>(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SelectionScreen(),
+              ),
+            );
+            if (result != null) {
+              bool isOk;
+              if (result.toLowerCase() == 'true') {
+                isOk = true;
+              } else {
+                isOk = false;
+              }
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(isOk ?'تمت الموافقة على الشروط':'تم رفض الشروط')),
+              );
+            }
+          },
+          child: const Text('Go to selection screen'),
         ),
       ),
     );
   }
+
 }
