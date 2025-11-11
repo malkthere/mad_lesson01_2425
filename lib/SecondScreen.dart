@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SelectionScreen extends StatelessWidget {
-  const SelectionScreen({super.key});
+class SecondPage extends StatelessWidget {
+  const SecondPage({super.key});
 
   
   static const String termsText = '''
@@ -67,7 +67,7 @@ class SelectionScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     // Pop this screen and return "Yes" to the previous screen
-                    Navigator.pop(context, 'true');
+                    Navigator.pop(context, true);
                   },
                   child: const Text('أوافق'),
                 ),
@@ -75,7 +75,7 @@ class SelectionScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     // Pop this screen and return "No" to the previous screen
-                    Navigator.pop(context, 'false');
+                    Navigator.pop(context, false);
                   },
                   child: const Text('لا أوافق'),
                 ),

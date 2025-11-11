@@ -27,22 +27,15 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () async{
-            final result = await Navigator.push<String>(
+            final result = await Navigator.push<bool>(
               context,
               MaterialPageRoute(
-                builder: (context) => const SelectionScreen(),
+                builder: (context) => const SecondPage(),
               ),
             );
             if (result != null) {
-              bool isOk;
-              if (result.toLowerCase() == 'true') {
-                isOk = true;
-              } else {
-                isOk = false;
-              }
-
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(isOk ?'تمت الموافقة على الشروط':'تم رفض الشروط')),
+                SnackBar(content: Text(result ?'تمت الموافقة على الشروط':'تم رفض الشروط')),
               );
             }
           },
